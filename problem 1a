@@ -1,0 +1,68 @@
+// Problem 1. There is a 5-digit number that satisfies 4*abcde = edcba, that is, when multiplied by 4 yields the same number read backwards. Write a C-program to find this number.
+#include <stdio.h>
+
+
+int main(void)
+{
+    int a,b,c,d,e,i;
+    i = 10000;
+    for (;i < 25000;) // for循环三个条件都要有 开始；范围；递增
+    {
+        a = (i/10000)%10; // 取余
+        b = (i/1000)%10;
+        c = (i/100)%10;
+        d = (i/10)%10;
+        e = i%10;
+        
+        if (i * 4 == e*10000 + d*1000 + c*100 + b*10 + a)
+        {
+            printf("%d\n",i);
+        }
+        i = i+1;
+
+    }
+
+
+}
+
+// Problem 2. Write a C program to compute the matrix product of two matrices A and B.
+#include <stdio.h>
+
+#define M 4   
+#define N 4
+#define P 4
+
+
+void matrixmultiply(float a[M][N],float b[N][P],float c[M][P]){
+    int i,j,k;
+    for (i=0;i<M;i++){
+        for (j=0;j<P;j++){
+            c[i][j] = 0;
+            for (k=0;k<N;k++){
+                c[i][j] += a[i][k]*b[k][j];
+            }
+
+
+        }
+    }
+}
+
+int main(){
+    int g;
+    float a[M][N] = { {1, 1, 1, 1}, {2, 2, 2, 2}, {3, 3, 3, 3}, {4, 4, 4, 4}}; 
+    float b[N][P] = { {1, 1, 1, 1}, {2, 2, 2, 2}, {3, 3, 3, 3}, {4, 4, 4, 4}};
+    float c[M][P]; // To store result
+    g = sizeof(a[M][N])/sizeof(a[0]); // 计算list中有几个元素的方法
+    // N = sizeof(a[M][N])/sizeof(a[0][0])/M; // 计算list中的元素list有几个元素的方法
+    // P = sizeof( b[N][P])/sizeof(a[0][0])/N;
+    int i,j;
+
+    matrixmultiply(a,b,c);
+    printf("result is \n");
+    for (i=0; i<M; i++){
+        for (j=0; j<P; j++){
+            printf("%f",c[i][j]);
+            printf("\n");
+        }
+    }
+}
