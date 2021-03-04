@@ -1,1 +1,122 @@
 // Problem 1. Modify the stack implementation in the lecture notes (Stack.h and Stack.c) to implement a stack of integers.
+
+
+#include <assert.h>
+#include "stack.h"
+
+#define MAXITEMS 10
+
+static struct 
+{
+    /* data */
+    int item[MAXITEMS];
+    int top;
+
+}stackObject;
+
+void StackInit(){
+    stackObject.top = -1; // 用于检测是否是第一个
+}
+
+int StackIsEmpty(){
+    return (stackObject.top < 0);
+}
+
+void StackPush(int n){ // 先++再放入是因为初始是-1，正好从0开始
+    assert(stackObject.top < (MAXITEMS-1));
+    stackObject.top++;
+    int i = stackObject.top;
+    stackObject.item[i] = n;
+}
+
+int StackPop(){
+    assert(stackObject.top > -1);
+    int n = stackObject.item[stackObject.top];
+    stackObject.top--;
+    return n;
+}
+
+// Problem 2. Write a test program for your stack code in Q1 that does the following: 
+// o initialise the stack 
+// o prompt the user to input a number n 
+// o check that n is a positive number 
+// o prompt the user to input n numbers and push each number onto the stack
+// o use the stack to output the n numbers in reverse order
+
+
+#include <stdio.h>
+#include "stack.h"
+
+
+int main(void)
+{
+    StackInit();   
+
+    int i, n, number;
+
+    printf("Enter a positive number: ");
+    if( scanf("%d", &n) == 1 && (n > 0)) // 判断是否成功采到
+    {
+        for (i=0; i<n; i++)
+        {
+            printf("Enter a number: ");
+            scanf("%d", &number);
+            StackPush(number);
+
+        }
+        while ( StackIsEmpty() != 1) // 检测空不为真 或者可以 ！stackisempty（） 取反变换 1 0 同样效果 ** 小心条件不当导致 assert溢出
+            printf("%d\n", StackPop());
+        
+    }
+
+    return 0;
+}
+
+
+// Problem 3. Modify your program in Q2 so that it takes the n numbers from the command line. An example of the program execution could be
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "stack.h"
+
+
+int main(int agrc, char *agrv[]) // agrc是检测命令行命令个数 1名字+n命令char agrv是命令存储的list 
+{
+    StackInit();   
+
+    int i;
+    for (i=1; i < agrc; i++) // agrv[0]是exe文件名字 数据从[1]开始
+    {
+        StackPush(atoi(agrv[i])); // atoi是 char to int
+    }
+    
+    while ( StackIsEmpty() != 1)
+    {
+        printf("%d\n", StackPop());
+        
+    }
+
+    return 0;
+    
+}
+
+
+// Problem 4. A stack can be used to convert a positive decimal number n to a different numeral system with base k according to the following algorithm:
+// while n>0 do push n%k onto the stack n = n / k
+// end while
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
