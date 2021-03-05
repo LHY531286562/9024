@@ -107,7 +107,137 @@ int main(int agrc, char *agrv[]) // agrc是检测命令行命令个数 1名字+n
 // end while
 
 
+#include <stdio.h>
+#include <stdlib.h>
+#include "stack.h"
 
+
+int main(int agrc, char *agrv[])
+{
+    StackInit();   
+
+    int n;
+    if (agrc != 2)  // 位数错误 输出错误
+    { 
+        printf("Usage: %s number\n", agrv[0]); 
+        return 1;
+    }
+
+    n = atoi(agrv[1]); 
+    while (n != 0)
+    {
+        StackPush(n%2);
+        n = n/2;
+    }
+    
+    while ( StackIsEmpty() != 1)
+    {
+        printf("%d", StackPop());
+        
+    }
+    putchar('\n'); // 在out界面输出指定的字符 是用 单引号‘’
+    return 0;
+    
+}
+
+
+
+// Problem 5. Implement a queue of integers in C using an array to store all the integers. All the function prototypes of the integer queue are defined in IntQueue.h as follows:
+
+// 【】中数字大的是前 【0】是最后一位queue
+
+#include <assert.h>
+#include "stack.h"
+
+#define MAXITEMS 10
+
+static struct 
+{
+    int item[MAXITEMS];
+    int top;
+}queueObject;
+
+void QueueInit()
+{
+    queueObject.top = -1;
+}
+
+int QueueIsEmpty()
+{
+    return (queueObject.top < 0);
+}
+
+void QueueEnqueue(int n)
+{
+    assert(queueObject.top < MAXITEMS-1); 
+    queueObject.top++; // 增加上限
+    int i;
+    for (i = queueObject.top; i > 0; i--) // 从高到低依次向高位挪
+    {
+        queueObject.item[i] =  queueObject.item[i-1];
+    }
+    queueObject.item[0] = n;
+}
+
+int QueueDequeue()
+{
+    assert(queueObject.top > -1); 
+    int n = queueObject.item[queueObject.top];
+    queueObject.top--;
+    return n;
+}
+
+
+// Problem 6. Given the following definition: int data[12] = {5, 3, 6, 2, 7, 4, 9, 1, 8};
+// and assuming that &data[0] == 0x10000, what are the values of the following expressions? 
+
+// ** 二进制 0b开头 八进制 0开头 十六进制 0x开头
+
+data + 4  表示 地址 加四个地址位 4*4bytes 0x10010
+*data + 4 地址取值后加十进制4  4+5 9
+*(data + 4) 地址加四位后的取值 data[4] = 7
+data[4] 7
+*(data + *(data + 3))  6
+data[data[2]] 9
+
+
+//  Problem 8. Write a C program that takes 1 command line argument and prints all its prefixes in decreasing order of length. 
+// You are not permitted to use any library functions other than printf(). You arealso not permitted to use any array other than argv[].
+
+// ** 对于这个例子，argv[]大概可以理解为整个字符串为一个整体数据，字符串的不同字符保存在不同的位
+// ** 每次对于字符串数据的 print 都是从 start 和 end 的不同指向的位开始，到这个\0数据结束
+// 但是这个整个字符串算作命令行的一个数据，即 argv[1]
+
+
+
+#include <stdio.h> 
+int main(int argc, char *argv[]) 
+{
+    char *start, *end;
+    if (argc == 2)
+    {
+        start = argv[1];   // 选中命令行的 数据的首个数据
+        end = argv[1];
+        // printf("%c\n",*argv[1]+1);
+        // printf("%s\n",start);
+        //printf("%s\n",end+1);
+        while (*end != '\0')  // 如果首个数据的 end指向的位上不是0
+        {
+            end++;
+            //printf("%s\n",end);
+        }
+        //printf("%s\n",start);
+
+        while (start != end)
+        {
+            printf("%s\n",start);
+            end--;
+            *end = '\0';
+        }
+        
+    }
+    return 0;
+}
 
 
 
