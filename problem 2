@@ -1,0 +1,82 @@
+// Problem 1. Explain what is wrong with this function. Rewrite the function so that it correctly achieves the intended result using malloc().
+
+// The function is erroneous because the array arr will cease to exist after the line return arr, 
+// since arr is local to this function and gets destroyed once the function returns. 
+// So the caller will get a pointer to something that doesn't exist anymore, and you will start to see garbage, segmentation faults, and other errors.
+
+// 在函数内部的 局部变量 array 在函数结束后会被销毁， return的会是一个 指向已经不存在的东西的指针， 会造成error。
+
+int *makearray()
+{
+  int *arr = malloc(10* sizeof(int));
+  int i;
+  for (i=1; 1<10;i++)
+  {
+    arr[i]=i;
+  }
+  return arr;
+}
+
+
+// Problem 2.
+
+void func(int **a)   // 定义内容是一个指向指针的指针， 指针的地址
+{
+  *a = malloc(sizeof(int)); // 这个指针的地址是申请的空间
+}
+
+int main(void)
+{
+  int *p;
+  func(&p);  // 要把指针地址传递给 function
+  *p = 6;
+  printf("%d\n",*p); 
+  free(p);
+  return 0;
+}
+
+
+// Problem 3. Write a C-program to compute the first n Fibonacci numbers, print them on the standard output and store them in a dynamic array of 
+// unsigned long long int numbers (8 bytes, only positive numbers), where n is given as command line argument. 
+// For example, ./fib 60 should result in 1548008755920.
+
+
+
+#include <stdio.h> 
+#include <stdlib.h>
+int main(int argc, char *argv[]) 
+{ 
+    if (argc != 2) 
+    { 
+        fprintf(stderr, "Usage: %s number\n", argv[0]); 
+        return 1;
+    }
+    int n = atoi(argv[1]);
+    if (n>0)
+    {
+        unsigned long long int *arr = malloc(n * sizeof(unsigned long long int));
+        int i;
+        arr[0] = 1;
+        arr[1] = 1;
+        for (i =2; i<n; i++)
+        {
+            arr[i] = arr[i-1] + arr[i -2];
+        }
+        printf("%lld",arr[n-1]); // 不知道为什么 lld无法printf
+        free(arr);
+    }
+    return 0;
+}
+
+
+// 
+
+
+
+
+
+
+
+
+
+
