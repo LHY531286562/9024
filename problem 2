@@ -69,7 +69,9 @@ int main(int argc, char *argv[])
 }
 
 
-// 
+// Problem 6. Write a C-program called llbuild.c that builds a linked list of integers from user input. The program works as follows:
+
+
 
 
 
